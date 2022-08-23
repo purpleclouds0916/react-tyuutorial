@@ -7,9 +7,12 @@ class CustomGame extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      row: 3,
+      col: 3,
       history: [
         {
-          squares: Array(props.row * props.col).fill(null),
+          // 上手く動くのか心配
+          squares: Array(9).fill(null),
           lastPosition: null,
         },
       ],
@@ -18,8 +21,6 @@ class CustomGame extends React.Component {
       isDesc: false,
       message: null,
       activeSquares: [],
-      row: 3,
-      col: 3,
     }
   }
 
