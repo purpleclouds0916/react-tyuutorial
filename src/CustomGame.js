@@ -18,6 +18,8 @@ class CustomGame extends React.Component {
       isDesc: false,
       message: null,
       activeSquares: [],
+      row: 3,
+      col: 3,
     }
   }
 
@@ -40,7 +42,7 @@ class CustomGame extends React.Component {
       history: history.concat([
         {
           squares: squares,
-          lastPosition: lastPosition(i, this.props.row, this.props.col),
+          lastPosition: lastPosition(i, this.state.row, this.state.col),
         },
       ]),
       stepNumber: history.length,
@@ -104,35 +106,64 @@ class CustomGame extends React.Component {
     }
 
     return (
-      <div className="game">
-        {this.state.message && this.state.message}
-        <div className="game-board">
-          <Board
-            squares={current.squares}
-            activeSquares={calculateWinner(current.squares)}
-            onClick={(i) => {
-              this.handleClick(i)
+      <>
+        <div>
+          row:
+          <input
+            type="text"
+            name=""
+            value={this.state.row}
+            onChange={(e) => {
+              this.setState({ row: e.target.value })
             }}
-            row={this.props.row}
-            col={this.props.col}
-            history
-          />
+          ></input>
+          <br></br>
+          <br></br>
+          col:
+          <input
+            type="text"
+            name=""
+            value={this.state.col}
+            onChange={(e) => {
+              this.setState({ col: e.target.value })
+            }}
+          ></input>
+          <br></br>
+          <br></br>
+          winner:<input></input>
         </div>
-        <div className="game-info">
-          <div>{status}</div>
-          <div className="toggle-switch">
-            on:降順,off:昇順
-            <input
-              type="checkbox"
-              value=""
-              onChange={() => {
-                this.desc()
+        <br></br>
+        <br></br>
+        <div className="game">
+          {this.state.message && this.state.message}
+          <div className="game-board">
+            <Board
+              squares={current.squares}
+              activeSquares={calculateWinner(current.squares)}
+              onClick={(i) => {
+                this.handleClick(i)
               }}
-            ></input>
+              row={Number(this.state.row)}
+              col={Number(this.state.col)}
+              history
+            />
           </div>
-          <ol className={this.state.isDesc ? 'desc' : ''}>{moves}</ol>
+          <div className="game-info">
+            <div>{status}</div>
+            <div className="toggle-switch">
+              on:降順,off:昇順
+              <input
+                type="checkbox"
+                value=""
+                onChange={() => {
+                  this.desc()
+                }}
+              ></input>
+            </div>
+            <ol className={this.state.isDesc ? 'desc' : ''}>{moves}</ol>
+          </div>
         </div>
-      </div>
+      </>
     )
   }
 }

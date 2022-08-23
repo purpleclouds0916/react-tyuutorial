@@ -3,7 +3,7 @@ import CustomGame from './CustomGame'
 
 class Game extends React.Component {
   render() {
-    return <CustomGame row={5} col={7}></CustomGame>
+    return <CustomGame></CustomGame>
   }
 }
 
