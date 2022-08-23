@@ -53,3 +53,8 @@ ul {
 .active {
   font-weight: 700;
 }
+
+.desc {
+  display: flex;
+  flex-direction: column-reverse;
+}

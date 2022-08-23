@@ -11,15 +11,6 @@ const Square = (props) => {
 }
 
 class Board extends React.Component {
-  handleClick(i) {
-    const squares = this.state.squares.slice()
-    if (calculateWinner(squares) || squares[i]) {
-      return
-    }
-    squares[i] = this.state.xIsNext ? 'X' : 'O'
-    this.setState({ squares: squares, xIsNext: !this.state.xIsNext })
-  }
-
   renderSquare(i) {
     return (
       <Square
@@ -32,25 +23,16 @@ class Board extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
-    )
+    const boards = []
+
+    for (let i = 0; i < 9; i = i + 3) {
+      const inner = []
+      for (let r = 0; r < 3; r++) {
+        inner.push(<>{this.renderSquare(i + r)}</>)
+      }
+      boards.push(<div className="board-row">{inner}</div>)
+    }
+    return <div>{boards}</div>
   }
 }
 
@@ -67,6 +49,7 @@ class Game extends React.Component {
       stepNumber: 0,
       xIsNext: true,
       isDesc: false,
+      message: null,
     }
   }
 
@@ -90,12 +73,24 @@ class Game extends React.Component {
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
     })
+
+    if (!squares.includes(null)) {
+      this.setState({
+        message: '引き分けになりました。',
+      })
+    }
   }
 
   jumpTo(step) {
     this.setState({
       stepNumber: step,
       xIsNext: step % 2 === 0,
+    })
+  }
+
+  desc() {
+    this.setState({
+      isDesc: !this.state.isDesc,
     })
   }
 
@@ -134,8 +129,12 @@ class Game extends React.Component {
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O')
     }
+
+    const endBoard = this.state.history[history.length - 1].squares
+
     return (
       <div className="game">
+        {this.state.message && this.state.message}
         <div className="game-board">
           <Board
             squares={current.squares}
@@ -146,11 +145,17 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <div class="toggle-switch">
+          <div className="toggle-switch">
             on:降順,off:昇順
-            <input type="checkbox" value=""></input>
+            <input
+              type="checkbox"
+              value=""
+              onChange={() => {
+                this.desc()
+              }}
+            ></input>
           </div>
-          <ol>{moves}</ol>
+          <ol className={this.state.isDesc ? '' : 'desc'}>{moves}</ol>
         </div>
       </div>
     )
