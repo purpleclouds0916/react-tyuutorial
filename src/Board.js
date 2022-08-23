@@ -18,15 +18,18 @@ class Board extends React.Component {
 
   render() {
     const boards = []
-    const gameNum = this.props.gameNum
+    const row = this.props.row
+    const col = this.props.col
+    let currentNum = 0
 
-    for (let i = 0; i < gameNum * gameNum; i = i + gameNum) {
+    for (let r = 0; r < row * row; r = r + row) {
       const inner = []
-      for (let r = 0; r < gameNum; r++) {
-        inner.push(<>{this.renderSquare(i + r)}</>)
+      for (let c = 0; c < col; c++) {
+        inner.push(<>{this.renderSquare(currentNum)}</>)
+        currentNum++
       }
       boards.push(
-        <div className="board-row" key={i}>
+        <div className="board-row" key={r}>
           {inner}
         </div>
       )

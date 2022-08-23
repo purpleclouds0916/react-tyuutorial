@@ -88,8 +88,8 @@ class CustomGame extends React.Component {
           </button>
           {history[move].lastPosition && (
             <>
-              ({history[move].lastPosition.col},{' '}
-              {history[move].lastPosition.row})
+              row:{history[move].lastPosition.row},col:
+              {history[move].lastPosition.col}
             </>
           )}
         </li>
@@ -113,7 +113,8 @@ class CustomGame extends React.Component {
             onClick={(i) => {
               this.handleClick(i)
             }}
-            gameNum={3}
+            row={this.props.row}
+            col={this.props.col}
             history
           />
         </div>
@@ -129,7 +130,7 @@ class CustomGame extends React.Component {
               }}
             ></input>
           </div>
-          <ol className={this.state.isDesc ? '' : 'desc'}>{moves}</ol>
+          <ol className={this.state.isDesc ? 'desc' : ''}>{moves}</ol>
         </div>
       </div>
     )
@@ -162,15 +163,14 @@ const lastPosition = (positionNum, row, col) => {
     col: null,
   }
 
-  position.row = Math.trunc(positionNum / row) + 1
+  position.row = Math.trunc(positionNum / col) + 1
 
-  if (positionNum % col === 0) {
-    position.col = (positionNum % col) + 1
-  } else if (positionNum % 3 === 1) {
-    position.col = (positionNum % col) + 1
-  } else if (positionNum % 3 === 2) {
-    position.col = (positionNum % col) + 1
+  for (let i = 0; i < col; i++) {
+    if (positionNum % col === i) {
+      position.col = (positionNum % col) + 1
+    }
   }
+
   return position
 }
 
